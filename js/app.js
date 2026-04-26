@@ -378,7 +378,7 @@ function showIndicator(indicatorId) {
 
 // ── App launch (form definition) ──────────────────────────────────────────────
 
-function launchApp(parsedFormDef) {
+function launchApp(parsedFormDef, { openDetails = false } = {}) {
   formDef = parsedFormDef
   activeDomainId = formDef.domains[0]?.id ?? null
   activeIndicatorId = formDef.indicators.find(
@@ -391,6 +391,11 @@ function launchApp(parsedFormDef) {
   refreshProgressUI()
   renderSidebar(activeDomainId)
   renderContent(activeIndicatorId)
+
+  if (openDetails) {
+    populateDetailsForm()
+    openModal('modal-details')
+  }
 }
 
 function loadFormDefFromText(text, sourceLabel = '') {
@@ -398,7 +403,7 @@ function loadFormDefFromText(text, sourceLabel = '') {
     const parsed = parseFormDefinition(text)
     meta = {}
     answers = {}
-    launchApp(parsed)
+    launchApp(parsed, { openDetails: true })
     if (sourceLabel) $('form-def-filename').textContent = sourceLabel
     showToast('Assessment loaded — let\'s go!', 'success')
   } catch (err) {
