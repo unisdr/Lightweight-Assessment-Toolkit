@@ -30,6 +30,15 @@ export function serializeSaveState(formDef, meta, answers) {
     })
   }
 
+  rows.push({
+    row_type: 'meta',
+    id: 'form_definition_version',
+    score: '',
+    value: formDef.meta?.version || '',
+    narrative: '',
+    evidence: '',
+  })
+
   for (const indicator of formDef.indicators) {
     const ans = answers[indicator.id]
     if (!ans || (!ans.score && !ans.narrative && !ans.evidence)) continue

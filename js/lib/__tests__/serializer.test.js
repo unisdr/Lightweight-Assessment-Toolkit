@@ -80,6 +80,13 @@ describe('serializeSaveState', () => {
     expect(m2.date_saved).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     expect(m2.date_saved).not.toBe('1999-01-01')
   })
+
+  it('includes form_definition_version from formDef.meta.version', () => {
+    const csv = serializeSaveState(formDef, meta, answers)
+    expect(csv).toContain('form_definition_version')
+    const { meta: m2 } = parseSaveState(csv)
+    expect(m2.form_definition_version).toBe('1.0')
+  })
 })
 
 // ── buildFilename ─────────────────────────────────────────────────────────────

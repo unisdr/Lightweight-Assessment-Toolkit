@@ -122,4 +122,10 @@ describe('parseSaveState', () => {
     const { answers } = parseSaveState(SAVE_CSV)
     expect(Object.keys(answers)).toContain('1')
   })
+
+  it('parses form_definition_version meta field', () => {
+    const csv = `row_type,id,score,value,narrative,evidence\nmeta,form_definition_version,,1.2.0,,`
+    const { meta } = parseSaveState(csv)
+    expect(meta.form_definition_version).toBe('1.2.0')
+  })
 })

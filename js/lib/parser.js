@@ -87,6 +87,7 @@ export function parseSaveState(csvText) {
     'country', 'country_iso3', 'assessment_id', 'assessment_version',
     'form_definition_url', 'date_started', 'date_saved',
     'respondent_name', 'respondent_role', 'respondent_ministry', 'notes',
+    'form_definition_version',
   ])
 
   const meta = {}

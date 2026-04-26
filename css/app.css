@@ -9,6 +9,7 @@
   --lat-header-height: 56px;
   --lat-tabs-height: 46px;
   --lat-sidebar-width: 272px;
+  --lat-surface: #fff;
   --lat-irp-blue: #0f78bf;
   --lat-irp-blue-dark: #0b5d94;
   --lat-irp-blue-light: #e8f3fb;
@@ -42,6 +43,30 @@ label.lat-file-label {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+}
+
+/* ── Skip navigation ─────────────────────────────────────────────── */
+.lat-skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--lat-irp-blue);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0 0 var(--lat-radius) var(--lat-radius);
+  text-decoration: none;
+  transition: top 0.1s;
+}
+.lat-skip-nav:focus {
+  top: 0;
+}
+
+/* Ensure focus rings are always visible */
+:focus-visible {
+  outline: 2px solid var(--lat-irp-blue);
+  outline-offset: 2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -278,6 +303,57 @@ label.lat-file-label {
   background: var(--lat-irp-blue-light);
   border-color: var(--lat-irp-blue);
   color: var(--lat-irp-blue);
+}
+
+/* ── Domain progress bars ────────────────────────────────────────── */
+.lat-progress-bars {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem 0.625rem;
+  background: var(--lat-surface);
+  border-bottom: 1px solid var(--lat-border-light);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.lat-progress-bars::-webkit-scrollbar { display: none; }
+
+.lat-progress-domain {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 10rem;
+}
+
+.lat-progress-domain__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--lat-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 8rem;
+}
+
+.lat-progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--lat-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.lat-progress-fill {
+  height: 100%;
+  background: var(--lat-irp-blue);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.lat-progress-domain__count {
+  font-size: 0.6875rem;
+  color: var(--lat-text-muted);
+  white-space: nowrap;
 }
 
 /* ── App Body ─────────────────────────────────────────────────── */
@@ -1073,35 +1149,37 @@ label.lat-file-label {
 /* ═══════════════════════════════════════════════════════════════
    PRINT
 ═══════════════════════════════════════════════════════════════ */
+
+/* Hidden print area — populated by JS before printing */
+.lat-print-area { display: none; }
+
 @media print {
-  .lat-header,
-  .lat-tabs,
-  .lat-sidebar,
-  #toasts { display: none !important; }
-
-  .lat-app {
-    height: auto;
-    overflow: visible;
-  }
-
-  .lat-body { overflow: visible; }
-
-  .lat-content {
-    overflow: visible;
+  /* Show only the print area */
+  body > *:not(.lat-print-area) { display: none !important; }
+  .lat-print-area {
+    display: block !important;
+    font-family: Georgia, serif;
+    font-size: 11pt;
+    color: #000;
+    margin: 0;
     padding: 0;
   }
 
-  .lat-domain-section { display: block !important; }
+  .lat-print-title { margin-bottom: 1.5em; }
+  .lat-print-title h1 { font-size: 18pt; margin: 0 0 0.25em; }
 
-  .lat-domain-section + .lat-domain-section { page-break-before: always; }
+  .lat-print-domain { page-break-before: always; }
+  .lat-print-domain:first-child { page-break-before: avoid; }
+  .lat-print-domain h2 { font-size: 14pt; border-bottom: 1pt solid #999; padding-bottom: 4pt; }
+  .lat-print-domain h3 { font-size: 12pt; margin-top: 1em; color: #333; }
 
-  .lat-card {
-    box-shadow: none;
-    border: 1px solid #ccc;
-    margin-bottom: 0.75rem;
+  .lat-print-indicator {
+    margin: 0.75em 0 0.75em 1em;
+    padding: 0.5em 0;
+    border-bottom: 0.5pt solid #ddd;
   }
-
-  .lat-card__body { display: block !important; }
+  .lat-print-indicator h4 { font-size: 11pt; margin: 0 0 0.25em; }
+  .lat-print-indicator p { margin: 0.2em 0; }
 
   [hidden] { display: none !important; }
 }
@@ -1169,4 +1247,78 @@ label.lat-file-label {
   margin: 0.5rem 0 0;
   font-size: 0.8125rem;
   color: var(--lat-text-muted);
+}
+
+/* ── Welcome quick-start layout ─────────────────────────────────── */
+.lat-welcome__quickstart {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 1.5rem;
+  border: 1.5px solid var(--lat-border);
+  border-radius: var(--lat-radius-lg);
+  overflow: hidden;
+  background: #fff;
+}
+
+.lat-welcome__option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+}
+
+.lat-welcome__option--primary {
+  background: var(--lat-irp-blue-light);
+  border-right: 1.5px solid var(--lat-border);
+}
+
+.lat-welcome__option-label {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--lat-text);
+  display: block;
+}
+
+.lat-welcome__option-desc {
+  font-size: 0.8125rem;
+  color: var(--lat-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.lat-welcome__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--lat-text-muted);
+  background: var(--lat-bg);
+  border-left: 1.5px solid var(--lat-border);
+  border-right: 1.5px solid var(--lat-border);
+}
+
+/* ── Welcome downloads bar ──────────────────────────────────────── */
+.lat-welcome__downloads {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.lat-welcome__downloads-label {
+  font-weight: 600;
+  color: var(--lat-text-muted);
+}
+
+.lat-welcome__dl-link {
+  color: var(--lat-irp-blue);
+  text-decoration: underline;
 }

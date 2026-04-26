@@ -1,0 +1,24 @@
+row_type,id,score,value,narrative,evidence
+meta,country,,Indonesia,,
+meta,country_iso3,,IDN,,
+meta,assessment_id,,rrfat,,
+meta,assessment_version,,1.0-prototype,,
+meta,form_definition_url,,https://assets.undrr.org/rrfat/v1.0/form_definition.csv,,
+meta,date_started,,2026-04-15,,
+meta,date_saved,,2026-04-26,,
+meta,respondent_name,,Jane Doe,,
+meta,respondent_role,,"Director, National Disaster Management Agency",,
+meta,respondent_ministry,,Ministry of Home Affairs,,
+meta,notes,,Initial draft; finance section to be completed by Ministry of Finance.,,
+indicator,1,3,,Indonesia has a National Disaster Management Plan (Renas PB) covering response and early recovery. A standalone recovery framework is in draft and has been used in Central Sulawesi (2018) and Lombok (2018). Roles are defined for BNPB at national level and BPBD at sub-national level. Coordination with line ministries is established but operates inconsistently between events.,"BNPB Regulation No. 5/2017; Renas PB 2020-2024; Central Sulawesi Recovery Master Plan 2019; interview with BNPB Recovery Directorate, March 2026."
+indicator,2,2,,Recovery readiness is not formally assessed on a regular cycle. Post-event reviews are conducted after major disasters but findings are not systematically fed back into framework revision. A gap analysis was conducted in 2022 but recommendations were partially implemented.,BNPB internal review 2022; AHA Centre regional readiness assessment 2023.
+indicator,3,1,,Most line ministries do not have formal recovery strategies. Public Works has an internal reconstruction guideline but it is not a recovery strategy in the sense of this indicator. Health and Education sectors operate from response-focused contingency plans only.,
+indicator,4,3,,Recovery is referenced in RPJMN (national medium-term development plan) and the National DRR Plan. Climate adaptation is integrated through the long-term low carbon and climate resilience strategy. Coordination is uneven in practice.,
+indicator,5,,,The Ministry of Education and Culture maintains a heritage register but post-disaster protection arrangements are unclear. Need to consult further with the Directorate General of Culture before finalizing.,
+indicator,6,,,DEFER — Ministry of Health to complete this section.,
+indicator,8,2,,Disaster Management Law (Law 24/2007) provides general legal basis but recovery-specific provisions are limited. Government Regulation 21/2008 elaborates implementation. There is no permanent legal basis for fast-tracking procurement during recovery; ad-hoc Presidential Instructions have been issued after major events.,Law 24/2007 on Disaster Management; PP 21/2008; Presidential Instruction 8/2018 (Sulawesi).
+indicator,9,3,,BNPB has established mechanisms for capacity-building and surge support to BPBD at provincial and district levels. Pre-agreed support arrangements exist for major events; routine support varies by region.,BNPB Strategic Plan 2020-2024; BPBD capacity assessment 2024.
+indicator,19,,,Pending input from Ministry of Finance — Directorate of Risk Financing.,
+indicator,35,2,,Emergency management training is delivered through BNPB's training centre and several universities. Recovery-specific content is limited; most courses focus on response and preparedness.,BNPB training catalogue 2026; Universitas Pertahanan curriculum.
+indicator,49,3,,Statistics Indonesia (BPS) maintains baseline socioeconomic data at sub-district level. Damage and loss data is collected through the DIBI system. Integration between BPS and DIBI is improving but not automated.,BPS Statistical Yearbook; DIBI online database; MoU between BPS and BNPB (2023).
+indicator,54,2,,DIBI system tracks economic losses for major events. Non-economic loss tracking is not systematic. Sendai Framework Monitor reporting is conducted but data quality varies.,DIBI system documentation; SFM national reports 2018-2024.

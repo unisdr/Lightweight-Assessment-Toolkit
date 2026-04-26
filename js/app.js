@@ -59,16 +59,40 @@ function showToast(message, type = 'info') {
 
 // ── Modal management ──────────────────────────────────────────────────────────
 
+let lastFocusedElement = null
+
 function openModal(id) {
+  lastFocusedElement = document.activeElement
   const modal = $(id)
   modal.removeAttribute('hidden')
-  modal.querySelector('input:not([hidden]), textarea, button')?.focus()
+  const focusable = modal.querySelectorAll(
+    'button, input:not([hidden]), select, textarea, [href], [tabindex]:not([tabindex="-1"])'
+  )
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  first?.focus()
+  modal._trapHandler = e => {
+    if (e.key !== 'Tab') return
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first?.focus() }
+    }
+  }
+  modal.addEventListener('keydown', modal._trapHandler)
   document.addEventListener('keydown', handleEscape)
 }
 
 function closeModal(id) {
-  $(id).setAttribute('hidden', '')
+  const modal = $(id)
+  modal.setAttribute('hidden', '')
+  if (modal._trapHandler) {
+    modal.removeEventListener('keydown', modal._trapHandler)
+    modal._trapHandler = null
+  }
   document.removeEventListener('keydown', handleEscape)
+  lastFocusedElement?.focus()
+  lastFocusedElement = null
 }
 
 function handleEscape(e) {
@@ -107,6 +131,7 @@ function renderTabs() {
       role: 'tab',
       'aria-selected': String(isActive),
       'data-domain': domain.id,
+      tabindex: isActive ? '0' : '-1',
     })
     btn.innerHTML =
       `<span>${domain.label}</span>` +
@@ -114,6 +139,30 @@ function renderTabs() {
     btn.addEventListener('click', () => switchDomain(domain.id))
     container.appendChild(btn)
   }
+}
+
+function renderProgressBars() {
+  const container = $('progress-bars')
+  if (!container || !formDef) return
+  container.innerHTML = ''
+  const progress = calculateProgress(formDef, answers)
+  for (const domain of formDef.domains) {
+    const p = progress[domain.id] ?? { scored: 0, total: 0 }
+    const pct = p.total > 0 ? Math.round((p.scored / p.total) * 100) : 0
+    const item = el('div', { className: 'lat-progress-domain' })
+    item.innerHTML =
+      `<span class="lat-progress-domain__label">${domain.label}</span>` +
+      `<div class="lat-progress-track" role="progressbar" aria-valuenow="${p.scored}" aria-valuemin="0" aria-valuemax="${p.total}" aria-label="${domain.label} progress">` +
+        `<div class="lat-progress-fill" style="width:${pct}%"></div>` +
+      `</div>` +
+      `<span class="lat-progress-domain__count">${p.scored}/${p.total}</span>`
+    container.appendChild(item)
+  }
+}
+
+function refreshProgressUI() {
+  renderTabs()
+  renderProgressBars()
 }
 
 function renderSidebar(domainId) {
@@ -133,10 +182,12 @@ function renderSidebar(domainId) {
 function makeSidebarItem(indicator) {
   const ans = answers[indicator.id]
   const score = ans?.score ? String(ans.score) : ''
+  const isActive = indicator.id === activeIndicatorId
   const btn = el('button', {
-    className: `lat-sidebar__item${indicator.id === activeIndicatorId ? ' is-active' : ''}`,
+    className: `lat-sidebar__item${isActive ? ' is-active' : ''}`,
     'data-indicator': indicator.id,
   })
+  if (isActive) btn.setAttribute('aria-current', 'true')
   btn.innerHTML =
     `<span class="lat-sidebar__item-label">${indicator.label}</span>` +
     (score ? `<span class="lat-score-badge lat-score-badge--${score}">${score}</span>` : '')
@@ -282,7 +333,7 @@ function setAnswer(indicatorId, field, value) {
   if (!answers[indicatorId]) answers[indicatorId] = { score: null, narrative: '', evidence: '' }
   answers[indicatorId][field] = value
   refreshSidebarItem(indicatorId)
-  refreshTabBadge(formDef.indicatorDomainMap[indicatorId])
+  refreshProgressUI()
   persistState()
 }
 
@@ -307,7 +358,7 @@ function switchDomain(domainId) {
   activeDomainId = domainId
   const first = formDef.indicators.find(i => formDef.indicatorDomainMap[i.id] === domainId)
   activeIndicatorId = first?.id ?? null
-  renderTabs()
+  refreshProgressUI()
   renderSidebar(domainId)
   renderContent(activeIndicatorId)
 }
@@ -315,7 +366,9 @@ function switchDomain(domainId) {
 function showIndicator(indicatorId) {
   activeIndicatorId = indicatorId
   $('sidebar-nav').querySelectorAll('.lat-sidebar__item').forEach(btn => {
-    btn.classList.toggle('is-active', btn.dataset.indicator === indicatorId)
+    const isActive = btn.dataset.indicator === indicatorId
+    btn.classList.toggle('is-active', isActive)
+    isActive ? btn.setAttribute('aria-current', 'true') : btn.removeAttribute('aria-current')
   })
   renderContent(indicatorId)
   $('content-area').focus()
@@ -333,26 +386,44 @@ function launchApp(parsedFormDef) {
   $('welcome').setAttribute('hidden', '')
   $('app').removeAttribute('hidden')
   updateHeader()
-  renderTabs()
+  refreshProgressUI()
   renderSidebar(activeDomainId)
   renderContent(activeIndicatorId)
 }
 
+function loadFormDefFromText(text, sourceLabel = '') {
+  try {
+    const parsed = parseFormDefinition(text)
+    meta = {}
+    answers = {}
+    launchApp(parsed)
+    if (sourceLabel) $('form-def-filename').textContent = sourceLabel
+    showToast('Form definition loaded', 'success')
+  } catch (err) {
+    showToast(`Could not parse form definition: ${err.message}`, 'error')
+  }
+}
+
 function handleFormDefFile(file) {
   const reader = new FileReader()
-  reader.onload = e => {
-    try {
-      const parsed = parseFormDefinition(e.target.result)
-      meta = {}
-      answers = {}
-      launchApp(parsed)
-      $('form-def-filename').textContent = file.name
-      showToast('Form definition loaded', 'success')
-    } catch (err) {
-      showToast(`Could not parse form definition: ${err.message}`, 'error')
-    }
-  }
+  reader.onload = e => loadFormDefFromText(e.target.result, file.name)
   reader.readAsText(file)
+}
+
+async function loadDefaultFormDef() {
+  const btn = $('btn-try-rrfat')
+  btn.disabled = true
+  try {
+    const url = `${import.meta.env.BASE_URL}data/rrfat_form_definition.csv`
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const text = await res.text()
+    loadFormDefFromText(text, 'rrfat_form_definition.csv')
+  } catch (err) {
+    showToast(`Could not load default assessment: ${err.message}`, 'error')
+  } finally {
+    btn.disabled = false
+  }
 }
 
 // ── Save-state file ───────────────────────────────────────────────────────────
@@ -378,8 +449,16 @@ function handleSaveStateFile(file) {
       for (const [id, ans] of Object.entries(loadedAnswers)) {
         if (formDef.indicatorMap[id]) answers[id] = ans
       }
+      const savedVersion = loadedMeta.form_definition_version
+      const formVersion = formDef.meta?.version
+      if (savedVersion && formVersion && savedVersion !== formVersion) {
+        showToast(
+          `Version mismatch: save file is v${savedVersion}, form definition is v${formVersion}. Answers loaded but check for missing indicators.`,
+          'warning',
+        )
+      }
       updateHeader()
-      renderTabs()
+      refreshProgressUI()
       renderSidebar(activeDomainId)
       renderContent(activeIndicatorId)
       showToast('Save file loaded', 'success')
@@ -544,10 +623,43 @@ function resetToWelcome() {
   activeIndicatorId = null
   $('app').setAttribute('hidden', '')
   $('welcome').removeAttribute('hidden')
-  $('form-def-filename').textContent = 'No file selected'
+  $('form-def-filename').textContent = ''
 }
 
 // ── Drag-and-drop ─────────────────────────────────────────────────────────────
+
+// ── Print ─────────────────────────────────────────────────────────────────────
+
+function buildPrintArea() {
+  const area = $('print-area')
+  if (!area || !formDef) return
+  area.innerHTML = ''
+
+  const titleBlock = el('div', { className: 'lat-print-title' })
+  titleBlock.innerHTML = `<h1>${formDef.meta?.title || 'Assessment'}</h1>` +
+    `<p>${meta.country || ''} ${meta.date_saved || ''}</p>`
+  area.appendChild(titleBlock)
+
+  for (const domain of formDef.domains) {
+    const domainSection = el('div', { className: 'lat-print-domain' })
+    domainSection.appendChild(el('h2', { textContent: domain.label }))
+    for (const areaObj of formDef.areas.filter(a => a.domainId === domain.id)) {
+      domainSection.appendChild(el('h3', { textContent: areaObj.label }))
+      for (const indicator of formDef.indicators.filter(i => i.areaId === areaObj.id)) {
+        const ans = answers[indicator.id] ?? {}
+        const anchor = formDef.scoreAnchors.find(s => s.id === ans.score)
+        const card = el('div', { className: 'lat-print-indicator' })
+        card.innerHTML =
+          `<h4>${indicator.label}</h4>` +
+          `<p><strong>Score:</strong> ${ans.score ? `${ans.score} — ${anchor?.label ?? ''}` : 'Not scored'}</p>` +
+          (ans.narrative ? `<p><strong>Narrative:</strong> ${ans.narrative}</p>` : '') +
+          (ans.evidence ? `<p><strong>Evidence:</strong> ${ans.evidence}</p>` : '')
+        domainSection.appendChild(card)
+      }
+    }
+    area.appendChild(domainSection)
+  }
+}
 
 function initDropZone() {
   let depth = 0
@@ -667,6 +779,30 @@ function init() {
   // Auto-save toggle: persist immediately when enabled
   $('persistence-toggle').addEventListener('change', () => {
     if ($('persistence-toggle').checked) persistState()
+  })
+
+  // Download links for static assets
+  const base = import.meta.env.BASE_URL
+  $('link-download-template').href = `${base}data/rrfat_form_definition.csv`
+  $('link-download-example').href = `${base}data/rrfat_save_state_sample.csv`
+
+  // Quick-start RRFAT button
+  $('btn-try-rrfat').addEventListener('click', loadDefaultFormDef)
+
+  // Domain tab arrow-key navigation (roving tabindex)
+  $('domain-tabs').addEventListener('keydown', e => {
+    const tabs = [...$('domain-tabs').querySelectorAll('.lat-tab')]
+    const idx = tabs.indexOf(document.activeElement)
+    if (idx === -1) return
+    if (e.key === 'ArrowRight') { e.preventDefault(); tabs[(idx + 1) % tabs.length].focus() }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); tabs[(idx - 1 + tabs.length) % tabs.length].focus() }
+  })
+
+  // Print mode
+  window.addEventListener('beforeprint', buildPrintArea)
+  window.addEventListener('afterprint', () => {
+    const area = $('print-area')
+    if (area) area.innerHTML = ''
   })
 
   initDropZone()

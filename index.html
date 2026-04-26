@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+  <a href="#content-area" class="lat-skip-nav">Skip to main content</a>
 
   <!-- ══════════════════════════════════════════════
        WELCOME SCREEN
@@ -26,16 +27,31 @@
         Load a form-definition CSV to begin your assessment.
         If you have a previously saved session, you can open it after loading the form definition.
       </p>
-      <div class="lat-welcome__action">
-        <label class="mg-button mg-button-primary lat-file-label" role="button">
-          Load form definition
-          <input type="file" id="input-form-def" accept=".csv" hidden>
-        </label>
-        <p class="lat-welcome__filename" id="form-def-filename">No file selected</p>
-        <p class="lat-welcome__drop-hint">or drag &amp; drop a CSV anywhere on this page</p>
+      <div class="lat-welcome__quickstart">
+        <div class="lat-welcome__option lat-welcome__option--primary">
+          <strong class="lat-welcome__option-label">Try the RRFAT assessment</strong>
+          <p class="lat-welcome__option-desc">Load the default Recovery Readiness Framework &amp; Assessment Tool</p>
+          <button id="btn-try-rrfat" class="mg-button mg-button-primary">Start RRFAT assessment</button>
+        </div>
+        <div class="lat-welcome__divider" aria-hidden="true">or</div>
+        <div class="lat-welcome__option">
+          <strong class="lat-welcome__option-label">Load your own form definition</strong>
+          <p class="lat-welcome__option-desc">Use a custom assessment CSV</p>
+          <label class="mg-button mg-button-secondary lat-file-label" role="button">
+            Choose CSV file
+            <input type="file" id="input-form-def" accept=".csv" hidden>
+          </label>
+          <p class="lat-welcome__filename" id="form-def-filename"></p>
+          <p class="lat-welcome__drop-hint">or drag &amp; drop a CSV anywhere on this page</p>
+        </div>
+      </div>
+      <div class="lat-welcome__downloads">
+        <span class="lat-welcome__downloads-label">Downloads:</span>
+        <a id="link-download-template" class="lat-welcome__dl-link" download="rrfat_form_definition.csv">Form definition template (CSV)</a>
+        <a id="link-download-example" class="lat-welcome__dl-link" download="rrfat_save_state_sample.csv">Example save file (CSV)</a>
       </div>
       <p class="lat-welcome__note">
-        <strong>Returning?</strong> Load the form definition above, then use
+        <strong>Returning?</strong> Start the RRFAT assessment above, then use
         <strong>Open saved</strong> in the toolbar to continue where you left off.
       </p>
     </div>
@@ -71,6 +87,7 @@
 
     <!-- Domain tabs -->
     <div class="lat-tabs" role="tablist" aria-label="Assessment domains" id="domain-tabs"></div>
+    <div id="progress-bars" class="lat-progress-bars" aria-label="Domain progress" aria-hidden="true"></div>
 
     <!-- Body: sidebar + content -->
     <div class="lat-body">
@@ -183,6 +200,8 @@
       <p class="lat-drop-overlay__text" id="drop-overlay-text">Drop CSV file</p>
     </div>
   </div>
+
+  <div id="print-area" class="lat-print-area" aria-hidden="true"></div>
 
   <script type="module" src="js/app.js"></script>
   <!-- Unregister any stale service workers (e.g. coi-sw.js from prior sessions) -->
