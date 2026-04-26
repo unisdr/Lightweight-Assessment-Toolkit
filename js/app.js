@@ -13,6 +13,8 @@ let activeDomainId = null
 let activeIndicatorId = null
 
 const STORAGE_KEY = 'lat_autosave_v1'
+const PIN_AUTH_KEY = 'lat_pin_auth'
+const PIN = '5498'
 
 // ── DOM utility ───────────────────────────────────────────────────────────────
 
@@ -723,6 +725,13 @@ function initDropZone() {
 // ── Init ───────────────────────────────────────────────────────────────────────
 
 function init() {
+  if (!sessionStorage.getItem(PIN_AUTH_KEY)) {
+    initPinScreen()
+    return
+  }
+  $('pin-screen').hidden = true
+  $('welcome').hidden = false
+
   // Form definition file picker
   $('input-form-def').addEventListener('change', e => {
     const file = e.target.files[0]
@@ -808,4 +817,44 @@ function init() {
   initDropZone()
 }
 
+// ── PIN gate ──────────────────────────────────────────────────────────────────
+
+function initPinScreen() {
+  const digits = [...document.querySelectorAll('.lat-pin-digit')]
+
+  digits.forEach((input, i) => {
+    input.addEventListener('input', () => {
+      input.value = input.value.replace(/\D/g, '').slice(0, 1)
+      if (input.value && i < digits.length - 1) digits[i + 1].focus()
+    })
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !input.value && i > 0) digits[i - 1].focus()
+    })
+    input.addEventListener('paste', e => {
+      e.preventDefault()
+      const pasted = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 4)
+      digits.forEach((d, j) => { d.value = pasted[j] ?? '' })
+      digits[Math.min(pasted.length, digits.length - 1)].focus()
+    })
+  })
+
+  $('pin-form').addEventListener('submit', e => {
+    e.preventDefault()
+    const entered = digits.map(d => d.value).join('')
+    if (entered === PIN) {
+      sessionStorage.setItem(PIN_AUTH_KEY, '1')
+      $('pin-screen').hidden = true
+      $('welcome').hidden = false
+      init()
+    } else {
+      $('pin-error').hidden = false
+      digits.forEach(d => { d.value = '' })
+      digits[0].focus()
+    }
+  })
+
+  digits[0].focus()
+}
+
 init()
+

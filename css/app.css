@@ -1322,3 +1322,96 @@ label.lat-file-label {
   color: var(--lat-irp-blue);
   text-decoration: underline;
 }
+
+/* ── PIN gate screen ────────────────────────────────────────────── */
+.lat-pin-screen {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--lat-bg);
+  padding: 2rem 1rem;
+}
+
+.lat-pin-screen__inner {
+  background: var(--lat-surface);
+  border: 1px solid var(--lat-border);
+  border-radius: var(--lat-radius-lg);
+  box-shadow: var(--lat-shadow-lg);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.lat-pin-screen__logo {
+  margin-bottom: 1.5rem;
+}
+
+.lat-pin-screen__poc-banner {
+  background: #fff8e1;
+  border: 1.5px solid #f9a825;
+  border-radius: var(--lat-radius);
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.75rem;
+  font-size: 0.875rem;
+  color: #5a4000;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.lat-pin-screen__poc-banner strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+.lat-pin-screen__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--lat-text);
+  margin: 0 0 0.5rem;
+}
+
+.lat-pin-screen__desc {
+  color: var(--lat-text-muted);
+  font-size: 0.9375rem;
+  margin: 0 0 1.5rem;
+}
+
+.lat-pin-screen__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.lat-pin-screen__digits {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.lat-pin-digit {
+  width: 3rem;
+  height: 3.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid var(--lat-border);
+  border-radius: var(--lat-radius);
+  background: var(--lat-surface);
+  color: var(--lat-text);
+  transition: border-color 0.15s;
+}
+
+.lat-pin-digit:focus {
+  outline: none;
+  border-color: var(--lat-irp-blue);
+  box-shadow: 0 0 0 3px rgba(15,120,191,0.18);
+}
+
+.lat-pin-screen__error {
+  color: #c0392b;
+  font-size: 0.875rem;
+  margin: 0;
+}

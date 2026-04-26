@@ -13,9 +13,45 @@
   <a href="#content-area" class="lat-skip-nav">Skip to main content</a>
 
   <!-- ══════════════════════════════════════════════
+       PIN GATE
+  ══════════════════════════════════════════════ -->
+  <div id="pin-screen" class="lat-pin-screen" role="main">
+    <div class="lat-pin-screen__inner">
+      <div class="lat-pin-screen__logo">
+        <img src="https://assets.undrr.org/static/logos/irp/irp-logo-hz-rgb.png"
+             alt="IRP — International Recovery Platform" height="48"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="lat-pin-screen__poc-banner" role="note">
+        <strong>Proof of concept — for review and feedback only.</strong>
+        This tool is under active development and is not ready for operational use.
+        Please do not use it for real assessments or share results externally.
+      </div>
+      <h1 class="lat-pin-screen__title">Assessment Tool</h1>
+      <p class="lat-pin-screen__desc">Enter the 4-digit PIN to continue.</p>
+      <form id="pin-form" class="lat-pin-screen__form" novalidate autocomplete="off">
+        <div class="lat-pin-screen__digits" role="group" aria-label="4-digit PIN entry">
+          <input class="lat-pin-digit" type="password" inputmode="numeric"
+                 maxlength="1" pattern="[0-9]" aria-label="PIN digit 1">
+          <input class="lat-pin-digit" type="password" inputmode="numeric"
+                 maxlength="1" pattern="[0-9]" aria-label="PIN digit 2">
+          <input class="lat-pin-digit" type="password" inputmode="numeric"
+                 maxlength="1" pattern="[0-9]" aria-label="PIN digit 3">
+          <input class="lat-pin-digit" type="password" inputmode="numeric"
+                 maxlength="1" pattern="[0-9]" aria-label="PIN digit 4">
+        </div>
+        <p id="pin-error" class="lat-pin-screen__error" hidden aria-live="polite">
+          Incorrect PIN — please try again.
+        </p>
+        <button type="submit" class="mg-button mg-button-primary">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
        WELCOME SCREEN
   ══════════════════════════════════════════════ -->
-  <div id="welcome" class="lat-welcome">
+  <div id="welcome" class="lat-welcome" hidden>
     <div class="lat-welcome__inner">
       <div class="lat-welcome__logo">
         <img src="https://assets.undrr.org/static/logos/irp/irp-logo-hz-rgb.png"
