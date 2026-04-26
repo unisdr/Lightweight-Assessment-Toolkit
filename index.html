@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RRFAT — Recovery Readiness Framework &amp; Assessment Tool</title>
+  <!-- Mangrove IRP design system -->
+  <link rel="stylesheet" href="https://assets.undrr.org/static/mangrove/1.6.0/css/style-irp.css">
+  <!-- App layout and component overrides -->
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <a href="#content-area" class="lat-skip-nav">Skip to main content</a>
+
+  <!-- ══════════════════════════════════════════════
+       WELCOME SCREEN
+  ══════════════════════════════════════════════ -->
+  <div id="welcome" class="lat-welcome">
+    <div class="lat-welcome__inner">
+      <div class="lat-welcome__logo">
+        <img src="https://assets.undrr.org/static/logos/irp/irp-logo-hz-rgb.png"
+             alt="IRP — International Recovery Platform" height="48"
+             onerror="this.style.display='none'">
+      </div>
+      <h1 class="lat-welcome__title">Assessment Tool</h1>
+      <p class="lat-welcome__intro">
+        Get started by loading an assessment below, or try the built-in RRFAT with one click.
+        Already in progress? Load your form first, then open your save file.
+      </p>
+      <div class="lat-welcome__quickstart">
+        <div class="lat-welcome__option lat-welcome__option--primary">
+          <strong class="lat-welcome__option-label">Try the RRFAT assessment</strong>
+          <p class="lat-welcome__option-desc">Score your country's recovery readiness across governance, finance, capacity, and data</p>
+          <button id="btn-try-rrfat" class="mg-button mg-button-primary">Start RRFAT assessment</button>
+        </div>
+        <div class="lat-welcome__divider" aria-hidden="true">or</div>
+        <div class="lat-welcome__option">
+          <strong class="lat-welcome__option-label">Use a custom assessment</strong>
+          <p class="lat-welcome__option-desc">Load any compatible form-definition CSV</p>
+          <label class="mg-button mg-button-secondary lat-file-label" role="button">
+            Choose CSV file
+            <input type="file" id="input-form-def" accept=".csv" hidden>
+          </label>
+          <p class="lat-welcome__filename" id="form-def-filename"></p>
+          <p class="lat-welcome__drop-hint">or drag &amp; drop a CSV anywhere on this page</p>
+        </div>
+      </div>
+      <div class="lat-welcome__downloads">
+        <span class="lat-welcome__downloads-label">Downloads:</span>
+        <a id="link-download-template" class="lat-welcome__dl-link" download="rrfat_form_definition.csv">Blank form template (CSV)</a>
+        <a id="link-download-example" class="lat-welcome__dl-link" download="rrfat_save_state_sample.csv">Example save file (CSV)</a>
+      </div>
+      <p class="lat-welcome__note">
+        <strong>Coming back?</strong> Click <em>Start RRFAT assessment</em> above, then use
+        <strong>Open saved</strong> in the toolbar to pick up where you left off.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       APP (hidden until form definition loads)
+  ══════════════════════════════════════════════ -->
+  <div id="app" class="lat-app" hidden>
+
+    <!-- Header -->
+    <header class="lat-header" role="banner">
+      <div class="lat-header__brand">
+        <span class="lat-header__title" id="header-title">Assessment</span>
+        <span class="lat-header__meta" id="header-meta"></span>
+      </div>
+      <div class="lat-header__actions">
+        <button id="btn-details" class="mg-button mg-button-secondary lat-header__btn"
+                title="Edit your assessment details">Details</button>
+        <label class="mg-button mg-button-secondary lat-header__btn lat-file-label"
+               title="Continue from a saved CSV" role="button">
+          Open saved
+          <input type="file" id="input-save-state" accept=".csv" hidden>
+        </label>
+        <button id="btn-save" class="mg-button mg-button-secondary lat-header__btn"
+                title="Save your progress as a CSV">Save</button>
+        <button id="btn-report" class="mg-button mg-button-primary lat-header__btn"
+                title="Generate and download a Word report">Build report</button>
+        <button id="btn-new" class="mg-button mg-button-secondary lat-header__btn lat-header__btn--danger"
+                title="Clear everything and start over">New</button>
+      </div>
+    </header>
+
+    <!-- Domain tabs -->
+    <div class="lat-tabs" role="tablist" aria-label="Assessment domains" id="domain-tabs"></div>
+    <div id="progress-bars" class="lat-progress-bars" aria-label="Domain progress" aria-hidden="true"></div>
+
+    <!-- Body: sidebar + content -->
+    <div class="lat-body">
+
+      <aside class="lat-sidebar" aria-label="Indicator navigation">
+        <div class="lat-sidebar__scroll" id="sidebar-nav"></div>
+        <div class="lat-sidebar__footer">
+          <div class="mg-form-check">
+            <input class="mg-form-check__input mg-form-check__input--checkbox" type="checkbox" id="persistence-toggle">
+            <label class="mg-form-check__label" for="persistence-toggle">
+              Auto-save in this browser
+            </label>
+          </div>
+          <p class="lat-sidebar__note">
+            Handy for quick sessions, but not a backup — download your save file regularly.
+          </p>
+        </div>
+      </aside>
+
+      <main class="lat-content" id="content-area" role="main" tabindex="-1"></main>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: Assessment details
+  ══════════════════════════════════════════════ -->
+  <div id="modal-details" class="lat-modal" hidden
+       role="dialog" aria-modal="true" aria-labelledby="modal-details-title">
+    <div class="lat-modal__backdrop" data-close-modal="modal-details"></div>
+    <div class="lat-modal__dialog">
+      <h2 id="modal-details-title" class="lat-modal__title">Assessment details</h2>
+      <form id="form-details" novalidate>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-country">Country</label>
+          <input class="mg-form-input" type="text" id="meta-country" name="country"
+                 placeholder="Country name" autocomplete="off">
+        </div>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-iso3">ISO3 code</label>
+          <input class="mg-form-input" type="text" id="meta-iso3" name="country_iso3"
+                 placeholder="e.g. IDN" maxlength="3" autocomplete="off"
+                 style="text-transform:uppercase">
+        </div>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-name">Respondent name</label>
+          <input class="mg-form-input" type="text" id="meta-name" name="respondent_name"
+                 autocomplete="off">
+        </div>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-role">Role / title</label>
+          <input class="mg-form-input" type="text" id="meta-role" name="respondent_role"
+                 autocomplete="off">
+        </div>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-ministry">Ministry / organisation</label>
+          <input class="mg-form-input" type="text" id="meta-ministry"
+                 name="respondent_ministry" autocomplete="off">
+        </div>
+        <div class="mg-form-field">
+          <label class="mg-form-label" for="meta-notes">Notes</label>
+          <textarea class="mg-form-textarea" id="meta-notes" name="notes" rows="3"
+                    placeholder="Notes for your team — handoff notes, who's covering which sections, etc."></textarea>
+        </div>
+        <div class="lat-modal__actions">
+          <button type="submit" class="mg-button mg-button-primary">Save details</button>
+          <button type="button" class="mg-button mg-button-secondary"
+                  data-close-modal="modal-details">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: New assessment confirmation
+  ══════════════════════════════════════════════ -->
+  <div id="modal-new" class="lat-modal" hidden
+       role="dialog" aria-modal="true" aria-labelledby="modal-new-title">
+    <div class="lat-modal__backdrop" data-close-modal="modal-new"></div>
+    <div class="lat-modal__dialog lat-modal__dialog--sm">
+      <h2 id="modal-new-title" class="lat-modal__title">Start a new assessment?</h2>
+      <p>All your scores and notes will be erased.
+         If you want to keep your work, download your save file before continuing.</p>
+      <div class="lat-modal__actions">
+        <button id="btn-new-confirm" class="mg-button mg-button-primary lat-btn--danger">
+          Yes, clear everything
+        </button>
+        <button class="mg-button mg-button-secondary" data-close-modal="modal-new">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TOAST CONTAINER
+  ══════════════════════════════════════════════ -->
+  <div id="toasts" class="lat-toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- DROP OVERLAY (shown while a CSV is dragged over the page) -->
+  <div id="drop-overlay" class="lat-drop-overlay" aria-hidden="true">
+    <div class="lat-drop-overlay__inner">
+      <svg class="lat-drop-overlay__icon" viewBox="0 0 48 48" aria-hidden="true" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="8" y="6" width="32" height="36" rx="3"/>
+        <line x1="16" y1="16" x2="32" y2="16"/>
+        <line x1="16" y1="22" x2="32" y2="22"/>
+        <line x1="16" y1="28" x2="26" y2="28"/>
+        <polyline points="30 34 24 40 18 34"/>
+        <line x1="24" y1="28" x2="24" y2="40"/>
+      </svg>
+      <p class="lat-drop-overlay__text" id="drop-overlay-text">Drop your CSV here</p>
+    </div>
+  </div>
+
+  <div id="print-area" class="lat-print-area" aria-hidden="true"></div>
+
+  <script type="module" src="js/app.js"></script>
+  <!-- Unregister any stale service workers (e.g. coi-sw.js from prior sessions) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => r.unregister())
+      })
+    }
+  </script>
+</body>
+</html>
