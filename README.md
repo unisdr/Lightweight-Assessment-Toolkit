@@ -51,7 +51,7 @@ npm run test:watch # watch mode
 ## Usage
 
 1. **Open the app** in your browser at `http://localhost:5174`
-2. **Load a form definition** — click *Load form definition* or drag-drop the file `reference/rrfat_form_definition.csv` onto the page
+2. **Load a form definition** — click *Start RRFAT assessment* to load the built-in assessment, or drag-drop any compatible `rrfat_form_definition.csv` onto the page
 3. Fill in the **assessment metadata** (country, date, focal point, etc.) in the dialog that appears
 4. **Score each indicator** using the 1–4 scale; add narrative and evidence notes
 5. Use the **domain tabs** and **sidebar** to navigate between indicators
