@@ -1,0 +1,1172 @@
+/* ═══════════════════════════════════════════════════════════════
+   app.css — Layout and app-specific styles for the Assessment Tool
+   Mangrove IRP theme (style-irp.css) handles all component styling.
+   All app-specific classes use the lat- prefix.
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Variables ──────────────────────────────────────────────── */
+:root {
+  --lat-header-height: 56px;
+  --lat-tabs-height: 46px;
+  --lat-sidebar-width: 272px;
+  --lat-irp-blue: #0f78bf;
+  --lat-irp-blue-dark: #0b5d94;
+  --lat-irp-blue-light: #e8f3fb;
+  --lat-border: #cdd8e3;
+  --lat-border-light: #eaf0f5;
+  --lat-bg: #f3f6f9;
+  --lat-text: #1a2d3d;
+  --lat-text-muted: #5a7080;
+  --lat-radius: 6px;
+  --lat-radius-lg: 10px;
+  --lat-shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --lat-shadow-md: 0 2px 8px rgba(0,0,0,0.12);
+  --lat-shadow-lg: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Ensure the HTML `hidden` attribute always wins over display:flex/block rules */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--lat-bg);
+  color: var(--lat-text);
+}
+
+/* Allow <label> elements to use Mangrove button classes */
+label.mg-button,
+label.lat-file-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WELCOME SCREEN
+═══════════════════════════════════════════════════════════════ */
+.lat-welcome {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.lat-welcome__inner {
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+}
+
+.lat-welcome__logo {
+  margin-bottom: 1.5rem;
+  min-height: 48px;
+}
+
+.lat-welcome__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--lat-text);
+  margin: 0 0 0.6rem;
+}
+
+.lat-welcome__intro {
+  font-size: 1rem;
+  color: var(--lat-text-muted);
+  margin: 0 0 2rem;
+  line-height: 1.65;
+}
+
+.lat-welcome__action {
+  margin-bottom: 1.75rem;
+}
+
+.lat-welcome__filename {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--lat-text-muted);
+  font-style: italic;
+}
+
+.lat-welcome__filename.is-loaded {
+  color: #1a7a3f;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.lat-welcome__note {
+  font-size: 0.875rem;
+  color: var(--lat-text-muted);
+  background: var(--lat-irp-blue-light);
+  border-left: 3px solid var(--lat-irp-blue);
+  border-radius: var(--lat-radius);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════════════════════════════ */
+.lat-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.lat-header {
+  height: var(--lat-header-height);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  background: var(--lat-irp-blue-dark);
+  color: #fff;
+  gap: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+  z-index: 100;
+}
+
+.lat-header__brand {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.lat-header__title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.lat-header__meta {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+
+.lat-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+/* Compact buttons in the dark header */
+.lat-header .mg-button,
+.lat-header label.mg-button,
+.lat-header label.lat-file-label {
+  font-size: 0.8125rem;
+  padding: 0.3em 0.8em;
+  line-height: 1.4;
+}
+
+.lat-header .mg-button-secondary,
+.lat-header label.mg-button-secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.9);
+  border-color: rgba(255,255,255,0.38);
+}
+
+.lat-header .mg-button-secondary:hover,
+.lat-header label.mg-button-secondary:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.65);
+  color: #fff;
+}
+
+.lat-header .mg-button-primary {
+  background: var(--lat-irp-blue);
+  border-color: var(--lat-irp-blue);
+  color: #fff;
+}
+
+.lat-header .mg-button-primary:hover {
+  background: #0c6aac;
+  border-color: #0c6aac;
+}
+
+.lat-header__btn--danger {
+  color: #ffb3b3 !important;
+  border-color: rgba(255,100,100,0.38) !important;
+}
+
+.lat-header__btn--danger:hover {
+  background: rgba(255,80,80,0.14) !important;
+  color: #ffcccc !important;
+}
+
+/* ── Domain Tabs ─────────────────────────────────────────────── */
+.lat-tabs {
+  height: var(--lat-tabs-height);
+  flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border-bottom: 1.5px solid var(--lat-border);
+  overflow-x: auto;
+  padding: 0 0.5rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.lat-tabs::-webkit-scrollbar { display: none; }
+
+.lat-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0 1rem;
+  height: 100%;
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--lat-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1.5px; /* overlap bottom border */
+}
+
+.lat-tab:hover { color: var(--lat-irp-blue); }
+
+.lat-tab.is-active {
+  color: var(--lat-irp-blue);
+  border-bottom-color: var(--lat-irp-blue);
+}
+
+.lat-tab:focus-visible {
+  outline: 2px solid var(--lat-irp-blue);
+  outline-offset: -2px;
+}
+
+.lat-tab__progress {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4em;
+  padding: 0 0.3em;
+  height: 1.35em;
+  background: var(--lat-bg);
+  border: 1px solid var(--lat-border);
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--lat-text-muted);
+  line-height: 1;
+}
+
+.lat-tab.is-active .lat-tab__progress {
+  background: var(--lat-irp-blue-light);
+  border-color: var(--lat-irp-blue);
+  color: var(--lat-irp-blue);
+}
+
+/* ── App Body ─────────────────────────────────────────────────── */
+.lat-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────── */
+.lat-sidebar {
+  width: var(--lat-sidebar-width);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-right: 1.5px solid var(--lat-border);
+  overflow: hidden;
+}
+
+.lat-sidebar__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.lat-sidebar-domain {
+  margin-bottom: 0.125rem;
+}
+
+.lat-sidebar-domain__header {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.45rem 0.75rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lat-text-muted);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.lat-sidebar-domain__header:hover,
+.lat-sidebar-domain.is-active .lat-sidebar-domain__header {
+  color: var(--lat-irp-blue);
+}
+
+.lat-sidebar-area__header {
+  padding: 0.15rem 0.75rem 0.1rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--lat-text-muted);
+  line-height: 1.3;
+}
+
+.lat-sidebar-indicators {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.35rem;
+}
+
+.lat-sidebar-indicator {
+  position: relative;
+}
+
+.lat-sidebar-indicator__link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3em;
+  padding: 0.3rem 2rem 0.3rem 1.5rem;
+  text-decoration: none;
+  font-size: 0.75rem;
+  color: var(--lat-text-muted);
+  line-height: 1.4;
+  transition: background 0.1s, color 0.1s;
+}
+
+.lat-sidebar-indicator__link:hover {
+  background: var(--lat-bg);
+  color: var(--lat-irp-blue);
+}
+
+.lat-sidebar-indicator__link:focus-visible {
+  outline: 2px solid var(--lat-irp-blue);
+  outline-offset: -2px;
+}
+
+.lat-sidebar-indicator__num {
+  flex-shrink: 0;
+  font-weight: 700;
+  min-width: 1.6em;
+  font-size: 0.6875rem;
+  color: inherit;
+}
+
+.lat-sidebar-indicator__label {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.lat-sidebar-status {
+  position: absolute;
+  right: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lat-bg);
+  border: 1.5px solid var(--lat-border);
+  pointer-events: none;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.lat-sidebar-status.is-partial {
+  background: #e67e22;
+  border-color: #e67e22;
+}
+
+.lat-sidebar-status.is-complete {
+  background: #1a7a3f;
+  border-color: #1a7a3f;
+}
+
+.lat-sidebar__footer {
+  padding: 0.75rem;
+  border-top: 1px solid var(--lat-border-light);
+  background: var(--lat-bg);
+}
+
+.lat-sidebar__note {
+  margin: 0.3rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--lat-text-muted);
+  line-height: 1.4;
+}
+
+/* ── Main Content ─────────────────────────────────────────────── */
+.lat-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 1.75rem 4rem;
+  min-width: 0;
+}
+
+/* ── Domain & Area headings ───────────────────────────────────── */
+.lat-domain-section { display: none; }
+.lat-domain-section.is-active { display: block; }
+
+.lat-domain-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--lat-irp-blue-dark);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--lat-irp-blue);
+}
+
+.lat-area-section {
+  margin-bottom: 2rem;
+}
+
+.lat-area-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--lat-text);
+  margin: 0 0 0.75rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--lat-border-light);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INDICATOR CARDS
+═══════════════════════════════════════════════════════════════ */
+.lat-card {
+  background: #fff;
+  border: 1.5px solid var(--lat-border);
+  border-radius: var(--lat-radius-lg);
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  box-shadow: var(--lat-shadow-sm);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  max-width: 860px;
+}
+
+.lat-card:hover { border-color: #a8c4d8; }
+.lat-card.is-expanded {
+  border-color: var(--lat-irp-blue);
+  box-shadow: var(--lat-shadow-md);
+}
+
+.lat-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.875rem 1rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.lat-card__header:hover { background: var(--lat-bg); }
+
+.lat-card__header:focus-visible {
+  outline: 2px solid var(--lat-irp-blue);
+  outline-offset: -2px;
+}
+
+.lat-card__num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2em;
+  height: 2em;
+  padding: 0 0.3em;
+  background: var(--lat-irp-blue-light);
+  color: var(--lat-irp-blue-dark);
+  border-radius: var(--lat-radius);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-top: 0.1em;
+}
+
+.lat-card__question {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--lat-text);
+  line-height: 1.45;
+}
+
+.lat-card__status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+  margin-top: 0.15em;
+}
+
+.lat-card__chevron {
+  color: var(--lat-text-muted);
+  display: inline-flex;
+  transition: transform 0.2s;
+}
+
+.lat-card.is-expanded .lat-card__chevron { transform: rotate(180deg); }
+
+/* Score badge on collapsed card header */
+.lat-score-badge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.15em 0.55em;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.lat-score-badge--empty {
+  background: var(--lat-bg);
+  color: var(--lat-text-muted);
+  border: 1px solid var(--lat-border);
+}
+
+.lat-score-badge--scored {
+  background: var(--lat-irp-blue-light);
+  color: var(--lat-irp-blue-dark);
+  border: 1px solid var(--lat-irp-blue);
+}
+
+/* Score-level colour variants (1 = low … 4 = high) */
+.lat-score-badge--1 { background: #fde8e8; color: #a93226; border: 1px solid #f1aaa7; }
+.lat-score-badge--2 { background: #fef3e0; color: #a85d00; border: 1px solid #fdd49a; }
+.lat-score-badge--3 { background: #fef9d9; color: #7d6200; border: 1px solid #f5e070; }
+.lat-score-badge--4 { background: #d6f0e0; color: #145a32; border: 1px solid #7ecda0; }
+
+/* ── Card body ───────────────────────────────────────────────── */
+.lat-card__body {
+  border-top: 1px solid var(--lat-border-light);
+  padding: 0 1rem 1.25rem;
+}
+
+/* ── Guidance sections ───────────────────────────────────────── */
+.lat-guidance {
+  margin-top: 1rem;
+  border-radius: var(--lat-radius);
+  padding: 0.7rem 0.9rem;
+}
+
+.lat-guidance__title {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lat-text-muted);
+  margin: 0 0 0.3rem;
+}
+
+.lat-guidance__text {
+  font-size: 0.875rem;
+  color: var(--lat-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.lat-guidance--definition {
+  background: var(--lat-bg);
+  border-left: 3px solid var(--lat-border);
+}
+
+.lat-guidance--rationale {
+  background: #f0f7ff;
+  border-left: 3px solid #7ab8e0;
+}
+
+.lat-guidance--questions {
+  background: #fffbf0;
+  border-left: 3px solid #e0b030;
+}
+
+.lat-guidance--questions ul {
+  margin: 0;
+  padding-left: 1.35rem;
+}
+
+.lat-guidance--questions li {
+  font-size: 0.875rem;
+  color: var(--lat-text);
+  line-height: 1.5;
+  margin-bottom: 0.3rem;
+}
+
+.lat-guidance--questions li:last-child { margin-bottom: 0; }
+
+/* ── Score section ───────────────────────────────────────────── */
+.lat-score-section {
+  margin-top: 1.25rem;
+}
+
+.lat-score-legend {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lat-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.lat-score-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lat-score-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  margin-bottom: 0.25rem;
+  border-radius: var(--lat-radius);
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.lat-score-option:hover { background: var(--lat-bg); }
+
+.lat-score-option.is-checked {
+  border-color: var(--lat-irp-blue);
+  background: var(--lat-irp-blue-light);
+}
+
+.lat-score-option .mg-form-check__input {
+  flex-shrink: 0;
+  margin-top: 0.25em;
+}
+
+.lat-score-num {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 50%;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  background: var(--lat-border-light);
+  color: var(--lat-text-muted);
+  pointer-events: none;
+}
+
+.lat-score-option.is-checked .lat-score-num {
+  background: var(--lat-irp-blue);
+  color: #fff;
+}
+
+.lat-score-label-wrap {
+  flex: 1;
+  cursor: pointer;
+}
+
+.lat-score-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+  cursor: pointer;
+}
+
+.lat-score-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.lat-score-text strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--lat-text);
+  line-height: 1.3;
+}
+
+.lat-score-anchor-desc {
+  font-size: 0.8125rem;
+  color: var(--lat-text-muted);
+  line-height: 1.45;
+}
+
+.lat-score-desc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--lat-text-muted);
+  margin-top: 0.1em;
+  line-height: 1.4;
+}
+
+/* ── Text fields within card body ───────────────────────────── */
+.lat-field {
+  margin-top: 1.1rem;
+}
+
+.lat-field__label {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lat-text-muted);
+  margin-bottom: 0.375rem;
+}
+
+/* Auto-growing Mangrove textarea */
+.lat-field .mg-form-textarea {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  min-height: 5rem;
+  line-height: 1.6;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD CONTENT (classes generated by app.js)
+═══════════════════════════════════════════════════════════════ */
+
+/* Title and description */
+.lat-card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--lat-text);
+  margin: 0 0 0.625rem;
+  line-height: 1.45;
+}
+
+.lat-card__description {
+  font-size: 0.9375rem;
+  color: var(--lat-text-muted);
+  line-height: 1.65;
+  margin: 0 0 1rem;
+}
+
+/* Collapsible details (Why it matters / Guiding questions) */
+.lat-card__details {
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--lat-border-light);
+  border-radius: var(--lat-radius);
+  overflow: hidden;
+}
+
+.lat-card__summary {
+  display: list-item;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--lat-irp-blue);
+  background: var(--lat-bg);
+  cursor: pointer;
+  user-select: none;
+  list-style: disclosure-closed inside;
+}
+
+.lat-card__details[open] > .lat-card__summary {
+  border-bottom: 1px solid var(--lat-border-light);
+  list-style-type: disclosure-open;
+}
+
+.lat-card__detail-text {
+  font-size: 0.875rem;
+  color: var(--lat-text);
+  line-height: 1.65;
+  margin: 0;
+  padding: 0.75rem 0.875rem;
+}
+
+.lat-card__detail-list {
+  margin: 0;
+  padding: 0.75rem 0.875rem 0.75rem 2rem;
+}
+
+.lat-card__detail-list li {
+  font-size: 0.875rem;
+  color: var(--lat-text);
+  line-height: 1.55;
+  margin-bottom: 0.3rem;
+}
+
+.lat-card__detail-list li:last-child { margin-bottom: 0; }
+
+/* Score fieldset */
+.lat-score-group {
+  border: 1px solid var(--lat-border);
+  border-radius: var(--lat-radius);
+  padding: 0.875rem 1rem 0.625rem;
+  margin: 1.25rem 0 1.25rem;
+}
+
+.lat-score-group__legend {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--lat-text-muted);
+  padding: 0 0.375rem;
+}
+
+.lat-score-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+/* Score radio — make it baseline-align with the number badge */
+.lat-score-radio {
+  flex-shrink: 0;
+  margin-top: 0.2em;
+}
+
+/* Number badge inside a score option — make it a compact circle */
+.lat-score-option .lat-score-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  margin-top: 0.1em;
+}
+
+/* Textarea inside a card (uses Mangrove class + our modifier) */
+.lat-card__textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+/* Prev/Next navigation row */
+.lat-card__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--lat-border-light);
+}
+
+/* Empty state prompt */
+.lat-content__empty {
+  color: var(--lat-text-muted);
+  font-style: italic;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+/* mg-form-field spacing inside the card */
+.lat-card .mg-form-field {
+  margin-bottom: 1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR ITEMS (classes generated by app.js)
+═══════════════════════════════════════════════════════════════ */
+
+.lat-sidebar__section {
+  margin-bottom: 0.375rem;
+}
+
+.lat-sidebar__area {
+  padding: 0.55rem 0.75rem 0.2rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lat-text-muted);
+  line-height: 1.35;
+}
+
+.lat-sidebar__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.35rem 0.875rem 0.35rem 1.5rem;
+  background: none;
+  border: none;
+  border-right: 2px solid transparent;
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: var(--lat-text-muted);
+  text-align: left;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background 0.1s, color 0.1s, border-right-color 0.1s;
+}
+
+.lat-sidebar__item:hover {
+  background: var(--lat-bg);
+  color: var(--lat-irp-blue);
+}
+
+.lat-sidebar__item.is-active {
+  background: var(--lat-irp-blue-light);
+  color: var(--lat-irp-blue-dark);
+  font-weight: 600;
+  border-right-color: var(--lat-irp-blue);
+}
+
+.lat-sidebar__item-label {
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Compact badge inside sidebar items */
+.lat-sidebar__item .lat-score-badge {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  padding: 0.15em 0.45em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════════════════════ */
+.lat-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.lat-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15,25,40,0.48);
+  cursor: pointer;
+}
+
+.lat-modal__dialog {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: var(--lat-radius-lg);
+  padding: 1.75rem 2rem;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--lat-shadow-lg);
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.lat-modal__dialog--sm { max-width: 380px; }
+
+.lat-modal__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: var(--lat-text);
+}
+
+.lat-modal__actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lat-modal__dialog .mg-form-field { margin-bottom: 0.875rem; }
+
+/* ── Danger button variant ───────────────────────────────────── */
+.lat-btn--danger.mg-button-primary {
+  background: #c0252a;
+  border-color: #c0252a;
+}
+
+.lat-btn--danger.mg-button-primary:hover {
+  background: #9e1f23;
+  border-color: #9e1f23;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TOASTS
+═══════════════════════════════════════════════════════════════ */
+.lat-toasts {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.lat-toast {
+  padding: 0.7rem 1.1rem;
+  border-radius: var(--lat-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--lat-shadow-md);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+  max-width: 380px;
+  pointer-events: auto;
+  line-height: 1.4;
+}
+
+.lat-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lat-toast--success { background: #e8f7ee; color: #1a7a3f; border: 1px solid #b0d8c3; }
+.lat-toast--error   { background: #fce8e8; color: #b02020; border: 1px solid #f0b0b0; }
+.lat-toast--warning { background: #fff4e0; color: #8a4800; border: 1px solid #f5d898; }
+.lat-toast--info    { background: var(--lat-irp-blue-light); color: var(--lat-irp-blue-dark); border: 1px solid #b0d0e8; }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .lat-sidebar { display: none; }
+  .lat-content { padding: 1rem 1rem 4rem; }
+  .lat-header__meta { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT
+═══════════════════════════════════════════════════════════════ */
+@media print {
+  .lat-header,
+  .lat-tabs,
+  .lat-sidebar,
+  #toasts { display: none !important; }
+
+  .lat-app {
+    height: auto;
+    overflow: visible;
+  }
+
+  .lat-body { overflow: visible; }
+
+  .lat-content {
+    overflow: visible;
+    padding: 0;
+  }
+
+  .lat-domain-section { display: block !important; }
+
+  .lat-domain-section + .lat-domain-section { page-break-before: always; }
+
+  .lat-card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    margin-bottom: 0.75rem;
+  }
+
+  .lat-card__body { display: block !important; }
+
+  [hidden] { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DRAG-AND-DROP OVERLAY
+═══════════════════════════════════════════════════════════════ */
+.lat-drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 93, 148, 0.88);
+  /* backdrop-filter degrades gracefully */
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.lat-drop-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+  /* restore pointer events so the drop target is reachable */
+  pointer-events: auto;
+}
+
+.lat-drop-overlay__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 3rem 4rem;
+  border: 3px dashed rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  color: #fff;
+  text-align: center;
+  /* pulse border on hover when file is held over */
+  animation: lat-drop-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes lat-drop-pulse {
+  0%, 100% { border-color: rgba(255, 255, 255, 0.7); }
+  50%       { border-color: rgba(255, 255, 255, 1); }
+}
+
+.lat-drop-overlay__icon {
+  width: 56px;
+  height: 56px;
+  opacity: 0.9;
+}
+
+.lat-drop-overlay__text {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* ── Welcome screen drop hint ───────────────────────────────── */
+.lat-welcome__drop-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--lat-text-muted);
+}
