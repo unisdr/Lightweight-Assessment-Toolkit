@@ -2,8 +2,8 @@
 
 ## Overview
 
-This project uses a **TDD-first approach** with [Vitest](https://vitest.dev/) and [Vite](https://vitejs.dev/).
-All pure logic lives in `js/lib/` and is independently testable.
+We follow a **test-first approach** (TDD) with [Vitest](https://vitest.dev/) and [Vite](https://vitejs.dev/).
+Keep pure logic in `js/lib/` — that's what gets unit-tested. DOM code lives in `js/app.js` and is covered by manual testing.
 
 ---
 
@@ -28,8 +28,6 @@ npm run build      # Production bundle → dist/
 5. **Never push failing tests** to `main`
 
 Pure functions belong in `js/lib/`. DOM code belongs in `js/app.js` (not unit-tested; covered by manual testing).
-
----
 
 ## Commit conventions
 
@@ -88,7 +86,7 @@ BREAKING CHANGE: meta values now read from 'description', not 'label'
 | `feat/*` | Feature branches                                    |
 | `fix/*`  | Bug fix branches                                    |
 
-PRs require at least one review before merge.
+All PRs need at least one review before merging.
 
 ---
 
@@ -127,7 +125,7 @@ To trigger a re-deploy manually: **Actions → Deploy to GitHub Pages → Run wo
 
 ## Pull request checklist
 
-Before opening a PR confirm that:
+Before opening a PR, make sure:
 
 - [ ] `npm test` passes locally with no failures
 - [ ] `npm run build` completes without errors

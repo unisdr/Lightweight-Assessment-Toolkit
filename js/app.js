@@ -200,7 +200,7 @@ function renderContent(indicatorId) {
   main.innerHTML = ''
 
   if (!indicatorId) {
-    main.appendChild(el('p', { className: 'lat-content__empty', textContent: 'Select an indicator from the sidebar.' }))
+    main.appendChild(el('p', { className: 'lat-content__empty', textContent: 'Select an indicator from the sidebar to start scoring.' }))
     return
   }
 
@@ -259,7 +259,7 @@ function renderContent(indicatorId) {
   // Narrative
   card.appendChild(makeTextareaField(
     `narrative-${indicatorId}`, 'Narrative',
-    ans.narrative, 4, 'Explain the basis for your score…',
+    ans.narrative, 4, 'Describe what's in place, what's missing, and why you scored it this way…',
     val => setAnswer(indicatorId, 'narrative', val),
   ))
 
@@ -398,9 +398,9 @@ function loadFormDefFromText(text, sourceLabel = '') {
     answers = {}
     launchApp(parsed)
     if (sourceLabel) $('form-def-filename').textContent = sourceLabel
-    showToast('Form definition loaded', 'success')
+    showToast('Assessment loaded — let\'s go!', 'success')
   } catch (err) {
-    showToast(`Could not parse form definition: ${err.message}`, 'error')
+    showToast(`Couldn't load that assessment: ${err.message}`, 'error')
   }
 }
 
@@ -420,7 +420,7 @@ async function loadDefaultFormDef() {
     const text = await res.text()
     loadFormDefFromText(text, 'rrfat_form_definition.csv')
   } catch (err) {
-    showToast(`Could not load default assessment: ${err.message}`, 'error')
+    showToast(`Couldn't load the RRFAT assessment: ${err.message}`, 'error')
   } finally {
     btn.disabled = false
   }
@@ -430,7 +430,7 @@ async function loadDefaultFormDef() {
 
 function handleSaveStateFile(file) {
   if (!formDef) {
-    showToast('Load a form definition first', 'warning')
+    showToast('Open an assessment first, then you can load a save file.', 'warning')
     return
   }
   const reader = new FileReader()
@@ -440,7 +440,7 @@ function handleSaveStateFile(file) {
       const unknownIds = Object.keys(loadedAnswers).filter(id => !formDef.indicatorMap[id])
       if (unknownIds.length) {
         showToast(
-          `${unknownIds.length} indicator(s) in save file not found in the current form definition — skipped`,
+          `${unknownIds.length} indicator(s) from your save file weren't found in the current form — they've been skipped.`,
           'warning',
         )
       }
@@ -453,7 +453,7 @@ function handleSaveStateFile(file) {
       const formVersion = formDef.meta?.version
       if (savedVersion && formVersion && savedVersion !== formVersion) {
         showToast(
-          `Version mismatch: save file is v${savedVersion}, form definition is v${formVersion}. Answers loaded but check for missing indicators.`,
+          `Heads up: your save file was made with form version ${savedVersion}, but you're on v${formVersion}. Answers loaded — double-check for any missing indicators.`,
           'warning',
         )
       }
@@ -461,9 +461,9 @@ function handleSaveStateFile(file) {
       refreshProgressUI()
       renderSidebar(activeDomainId)
       renderContent(activeIndicatorId)
-      showToast('Save file loaded', 'success')
+      showToast('Save file loaded — welcome back!', 'success')
     } catch (err) {
-      showToast(`Could not parse save file: ${err.message}`, 'error')
+      showToast(`Couldn't read that save file: ${err.message}`, 'error')
     }
   }
   reader.readAsText(file)
@@ -587,9 +587,9 @@ async function buildReport() {
     const blob = await Packer.toBlob(doc)
     const filename = buildFilename(formDef, meta, '.docx')
     downloadBlob(blob, filename)
-    showToast(`Report downloaded as ${filename}`, 'success')
+    showToast(`Report ready — saved as ${filename}`, 'success')
   } catch (err) {
-    showToast(`Report generation failed: ${err.message}`, 'error')
+    showToast(`Couldn't generate the report: ${err.message}`, 'error')
   } finally {
     btn.disabled = false
   }
@@ -669,8 +669,8 @@ function initDropZone() {
     clearTimeout(hideTimer)
     const isWelcome = !$('welcome').hasAttribute('hidden')
     $('drop-overlay-text').textContent = isWelcome
-      ? 'Drop CSV to load form definition'
-      : 'Drop CSV to restore session'
+      ? 'Drop a CSV to load your assessment'
+      : 'Drop a CSV to restore your session'
     $('drop-overlay').classList.add('is-active')
   }
 
@@ -707,7 +707,7 @@ function initDropZone() {
       f.name.toLowerCase().endsWith('.csv'),
     )
     if (!file) {
-      showToast('Please drop a .csv file', 'warning')
+      showToast('Please drop a CSV file', 'warning')
       return
     }
 

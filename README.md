@@ -1,6 +1,6 @@
 # Lightweight Assessment Toolkit
 
-A client-side single-page application for conducting structured self-assessments against a form-definition CSV.
+A lightweight, browser-based tool for running structured self-assessments — no server, no login, no installation needed.
 Built for the [RRFAT (Recovery Readiness Framework & Assessment Tool)](https://www.undrr.org/implementing-sendai-framework/recovery) under [IRP](https://www.recoveryplatform.org/) / [UNDRR](https://www.undrr.org/).
 
 ![UNDRR IRP](https://assets.undrr.org/static/mangrove/1.6.0/images/irp-logo.svg)
@@ -9,12 +9,12 @@ Built for the [RRFAT (Recovery Readiness Framework & Assessment Tool)](https://w
 
 ## Features
 
-- **Load a form definition** — drag-drop or file-picker for the RRFAT CSV (or any compatible schema)
-- **Structured self-assessment** — domain tabs, area grouping, per-indicator 4-point scoring scale with narrative and evidence fields
-- **Save / resume** — download a sparse save-state CSV; reload at any time to resume
-- **Auto-save** — optional browser `localStorage` persistence between sessions
-- **Word report** — generate a `.docx` summary report
-- **Fully offline** — no server, no backend; everything runs in the browser
+- **Load an assessment** — click once for the built-in RRFAT, or drag-drop any compatible form-definition CSV
+- **Score each indicator** — navigate by domain and area; rate each indicator 1–4 with space for narrative and evidence
+- **Save and resume** — download a lightweight CSV at any point; open it later to pick up where you left off
+- **Auto-save** — optionally persist progress in the browser between sessions (handy, but always download your save file too)
+- **Word report** — generate a `.docx` report summarising all scores, narratives, and evidence
+- **Fully offline** — everything runs in the browser; no data is sent anywhere
 
 ---
 
@@ -114,4 +114,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the conventional-commits workflow, br
 
 ## Licence
 
-© UNDRR / IRP. All rights reserved.
+© 2026 UNDRR / IRP. All rights reserved.
