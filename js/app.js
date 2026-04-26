@@ -819,6 +819,13 @@ function init() {
     if (area) area.innerHTML = ''
   })
 
+  // Warn before leaving with unsaved work
+  window.addEventListener('beforeunload', e => {
+    if (formDef && Object.keys(answers).length > 0) {
+      e.preventDefault()
+    }
+  })
+
   initDropZone()
 }
 
