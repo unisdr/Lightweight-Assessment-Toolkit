@@ -1,7 +1,7 @@
 # PRD — Lightweight Assessment Toolkit (working title)
 
 **Status:** Draft v0.2
-**Author:** Ken Hawkins, COS (UNDRR)
+**Author:** Ken Hawkins, Comms (UNDRR)
 **Date:** 26 April 2026
 **First instance:** Recovery Readiness Framework & Assessment Tool (RRFAT), under IRP
 
@@ -145,7 +145,7 @@ The Phase 1 prototype (see Phasing below) deliberately defers the Drupal integra
 | Per-indicator fields | Score, Narrative justification, Evidence sources |
 | Funding | ADB, BMZ |
 | Deployment scope | Six countries imminent, four to five more in next cycle |
-| Owner | IRP team (Geneva), with COS supporting the web build |
+| Owner | IRP team (Geneva), with Comms supporting the web build |
 
 The IRP working document `RRFAT_Working_Document_7_1_6.docx` is the source content. The HTML prototype is the visual design reference; its layout, scoring UI, and Word export behaviour can be lifted directly into the SPA.
 
@@ -224,10 +224,10 @@ Phases 1 and 2 should overlap. The SPA built in Phase 1 should be designed so th
 - Save-state CSV format: a flat one-row-per-indicator file with metadata header rows is the simplest design. Worth confirming this opens cleanly in Excel, Google Sheets, and LibreOffice for country focal points who may use any of them.
 - Where in the UNDRR assets repository should form-definition CSVs live, and what versioning convention? Pattern likely matters less than picking one and sticking to it.
 - Is there appetite for an access code in front of the assessment, even a soft one, to give IRP a usage signal? Mommoko's call suggested this would be welcome.
-- For the broader pattern, do we want a UNDRR-internal reference instance (e.g. a portfolio self-assessment for COS) as the second test, or do we wait for an external programme to ask?
+- For the broader pattern, do we want a UNDRR-internal reference instance (e.g. a portfolio self-assessment for Comms) as the second test, or do we wait for an external programme to ask?
 - Versioning: when RRFAT moves from version 1 to version 2 of the question set, how do existing in-progress save-state CSVs behave? Lock to the version they were started against, or migrate? The save-state CSV should at minimum carry a version stamp that the SPA can check against the loaded form-definition CSV.
 - Cost-recovery framing: how do we describe the tooling work to ADB, BMZ, and future donors so that the Phase 3 generalisation is funded rather than absorbed?
 
 ---
 
-*This is a working draft for discussion with IRP (Mommoko) and the COS web team. Next step: a follow-up call to confirm scope of Phase 1 and lock the host site decision.*
+*This is a working draft for discussion with IRP (Mommoko) and the Comms web team. Next step: a follow-up call to confirm scope of Phase 1 and lock the host site decision.*
