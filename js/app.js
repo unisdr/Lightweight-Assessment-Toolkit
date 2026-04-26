@@ -259,7 +259,7 @@ function renderContent(indicatorId) {
   // Narrative
   card.appendChild(makeTextareaField(
     `narrative-${indicatorId}`, 'Narrative',
-    ans.narrative, 4, 'Describe what's in place, what's missing, and why you scored it this way…',
+    ans.narrative, 4, "Describe what's in place, what's missing, and why you scored it this way…",
     val => setAnswer(indicatorId, 'narrative', val),
   ))
 
